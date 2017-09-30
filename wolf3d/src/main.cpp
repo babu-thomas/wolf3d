@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <SOIL.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "graphics/shader.h"
 #include "graphics/window.h"
@@ -27,7 +30,7 @@ int main()
 
 	Bitmap level1("level1.png");
 
-	int img_width = level1.getWidth();
+	/*int img_width = level1.getWidth();
 	int img_height = level1.getHeight();
 
 	for (int i = 0; i < img_height; i++)
@@ -38,6 +41,13 @@ int main()
 			std::cout << pixel.r << ", " << pixel.g << ", " << pixel.b << " : ";
 		}
 		std::cout << std::endl;
+	}*/
+
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile("cube.obj", aiProcess_Triangulate | aiProcess_FlipUVs);
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
 	}
 
 	while (!window.closed())
